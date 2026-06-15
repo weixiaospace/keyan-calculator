@@ -39,3 +39,18 @@ main:
   pull_request:
     - *frontend
     - *rust
+
+# 打 tag 时用 AI 自动生成 Code Wiki，仓库首页可见 wiki 入口
+$:
+  tag_push:
+    - services:
+        - docker
+      docker:
+        volumes:
+          - /data/codewiki/${CNB_REPO_SLUG}:data
+      stages:
+        - name: generate codewiki
+          timeout: 10h
+          image: cnbcool/codewiki:latest
+          settings:
+            git_doc_dir: /data/codewiki/${CNB_REPO_SLUG}
