@@ -1,0 +1,41 @@
+[package]
+name = "calculator"
+version = "0.1.0"
+description = "算码工具 - SM3 算码与时间存证"
+authors = ["yuzi"]
+edition = "2021"
+
+[lib]
+name = "calculator_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# SQLite（本地唯一真相源）
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# 国密 SM3
+sm3 = "0.4"
+hex = "0.4"
+
+# 文件夹并行扫描 + 并行哈希
+jwalk = "0.8"
+rayon = "1"
+
+# UUID / 时间
+uuid = { version = "1", features = ["v4"] }
+chrono = "0.4"
+
+# 上传（阻塞式 HTTP，配 rustls 避免 openssl 依赖）
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+
+[dev-dependencies]
+tempfile = "3"
