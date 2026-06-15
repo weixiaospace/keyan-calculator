@@ -19,6 +19,7 @@ import { StatusBar, type GlobalTask } from '@/components/status-bar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
+import { runUpdateCheck } from '@/lib/updater';
 
 interface SelectedFile {
   folderId: string;
@@ -88,6 +89,11 @@ export default function App() {
       }
     })();
   }, [scanFolder]);
+
+  // 启动时静默检查更新（有新版才提示，无更新/出错不打扰）
+  useEffect(() => {
+    void runUpdateCheck(true);
+  }, []);
 
   // ---- 事件监听 ------------------------------------------------------------
 

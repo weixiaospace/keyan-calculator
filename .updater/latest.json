@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0",
+  "notes": "算码工具",
+  "pub_date": "2026-06-15T00:00:00Z",
+  "platforms": {
+    "darwin-aarch64": {
+      "signature": "",
+      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases"
+    },
+    "windows-x86_64": {
+      "signature": "",
+      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases"
+    }
+  }
+}

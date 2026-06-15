@@ -36,6 +36,8 @@ chrono = "0.4"
 
 # 上传（阻塞式 HTTP，配 rustls 避免 openssl 依赖）
 reqwest = { version = "0.13", default-features = false, features = ["blocking", "json", "rustls"] }
+tauri-plugin-updater = "2.10.1"
+tauri-plugin-process = "2.3.1"
 
 [dev-dependencies]
 tempfile = "3"
