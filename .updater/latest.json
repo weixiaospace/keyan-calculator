@@ -1,15 +1,15 @@
 {
-  "version": "0.2.1",
-  "notes": "算码工具 v0.2.1",
-  "pub_date": "2026-06-15T16:04:28Z",
+  "version": "0.2.2",
+  "notes": "算码工具 v0.2.2",
+  "pub_date": "2026-06-15T16:48:53Z",
   "platforms": {
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ1NrWTBxb2hCVFZWLzZTMEk4MStEUTRHRW8vS1JiVFQwQkNnRjFJSWQ2dWhoR2d2dk1VbFZVKzBXS09TVnBydXdmN0tITjJXYXpIS210NnBPdXRXNHc0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTM5MTgzCWZpbGU6a2V5YW4tY2FsY3VsYXRvci5hcHAudGFyLmd6Ck1LdnZVUDMvcnJvVm92WDFkRWlBdGFhNmhiTTJrZ2JNZ0FNUXlNWlV3RjN4bVZ0Q2ZUT3lBc2UyeThpd1UvQ2ErT1kvM3MrMWJ1Ry9IVW9lY3pvWkNnPT0K",
-      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases/download/v0.2.1/keyan-calculator_aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ1RDeGR2QXZ0NGttUG5kSmRzVENvMStadG1CT1ZIbmJ0U1JxdHFxekI1bmlIeTNuMkNZNjhLdFRuZUtHempPVG45aEg4WGh0cXRQNEx0dXZXQllNUXdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTQxODAwCWZpbGU6a2V5YW4tY2FsY3VsYXRvci5hcHAudGFyLmd6CjBNNG1FekpvNzJQKzczWE1MR2xwczhvcEZ0N01GTTlVNkRxbVcvSElXclU3K25RR01yVVMxWU16dVEyakpML1BCK0RLVEd2OTdNM056NHpjSVJhR0RRPT0K",
+      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases/download/v0.2.2/keyan-calculator_aarch64.app.tar.gz"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ1lpNm94VDQwZVdCT2RFa1BkSTZnUFNubkNmY2RETnB6b3RLS2I0anJYWSthbTNpNUZPR0tUemhiQWpBeGlZTlZaQUxGbFhHZTBLa1hWL3NVVm5hbkFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTM5NDA5CWZpbGU6a2V5YW4tY2FsY3VsYXRvcl8wLjIuMV94NjQtc2V0dXAuZXhlCktiaWhQcEdPNlpQUDZnT1p3N3BlTk5uV2hXdldidWpHSTRXVG9DcnA1Y25PenNIWVh2Rk02YjRZMnQ0bGtNRTZlc1dZS3FFRU9aZ1JWNk1oa2JqckN3PT0K",
-      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases/download/v0.2.1/keyan-calculator_0.2.1_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ2VlcFVGNXl2U0MzVDJVMlJnWG5LTlByVTdHcU5TajFmblIxWXA1WkY0cGF5My9BRnpjOWxMUkUxUW05akhVTEZoNmdUUk1PY0ZTbGN2QXM1d0NOQ1E0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTQyMDQzCWZpbGU6a2V5YW4tY2FsY3VsYXRvcl8wLjIuMl94NjQtc2V0dXAuZXhlCm51V3MraU55Mk9QcXVTNGo3M1drRTM5QkxsaEx1WHpRWWRJS2Erck16MFh0UnZuTVZlRmJwS1Y4cVZzbjZnZG5QbHJMV2d0L2d0SnBsMURMRUpXVEFBPT0K",
+      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases/download/v0.2.2/keyan-calculator_0.2.2_x64-setup.exe"
     }
   }
 }
