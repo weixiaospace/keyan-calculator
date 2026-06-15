@@ -30,8 +30,11 @@ jobs:
         include:
           - platform: macos-14        # Apple Silicon (aarch64)
             target: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin
           - platform: windows-latest  # x86_64
             target: x86_64-pc-windows-msvc
+            # 只出 NSIS（updater 在 Windows 用 nsis）；跳过易失败的 WiX/MSI
+            args: --target x86_64-pc-windows-msvc --bundles nsis
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
@@ -66,7 +69,7 @@ jobs:
           releaseDraft: false
           prerelease: false
           includeUpdaterJson: true
-          args: --target ${{ matrix.target }}
+          args: ${{ matrix.args }}
 
   # 把 latest.json 推回 CNB —— app 的更新 endpoint 读取 CNB main 上的该文件。
   # 二进制仍托管在 GitHub Release（有稳定公开直链；CNB 附件无稳定直链）。
