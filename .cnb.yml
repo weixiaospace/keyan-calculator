@@ -1,0 +1,36 @@
+# CI：前端构建（tsc + vite build）与 Rust 测试（cargo test）
+# 触发：push 到 main、以及面向 main 的 Pull Request
+main:
+  push:
+    - &frontend
+      name: frontend
+      docker:
+        image: node:22
+        volumes:
+          - node_modules            # cow 缓存，加速 pnpm install
+      stages:
+        - name: enable pnpm
+          script: corepack enable
+        - name: install
+          script: pnpm install --frozen-lockfile
+        - name: build
+          script: pnpm run build:vite   # tsc && vite build
+
+    - &rust
+      name: rust
+      docker:
+        image: rust:1
+        volumes:
+          - cargo-registry:/usr/local/cargo/registry:rw   # 依赖源缓存
+          - cargo-target:/cnb/cargo-target:rw             # 编译产物缓存
+      env:
+        CARGO_TARGET_DIR: /cnb/cargo-target
+      stages:
+        - name: build deps
+          script: apt-get update && apt-get install -y --no-install-recommends cmake   # aws-lc-sys 需要
+        - name: cargo test
+          script: cd src-tauri && cargo test --locked
+
+  pull_request:
+    - *frontend
+    - *rust
