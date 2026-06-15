@@ -43,6 +43,10 @@ upload() {
 upload "$DIR/$mac_targz" "$mac_targz"
 upload "$DIR/$win_exe" "$win_exe"
 
+# macOS 首次安装用的 .dmg（仅作下载附件，不进 latest.json）
+mac_dmg=$(cd "$DIR" && ls | grep -E '\.dmg$' | head -1 || true)
+[[ -n "$mac_dmg" ]] && upload "$DIR/$mac_dmg" "$mac_dmg"
+
 echo "→ 生成 latest.json（指向 CNB 直链）"
 jq -n \
   --arg version "$VERSION" \
