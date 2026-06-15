@@ -1,0 +1,99 @@
+name: release
+
+# 用 GitHub 免费的 macOS/Windows runner 出签名包，发布到 GitHub Release，
+# 再把 updater 清单 latest.json 推回 CNB（app 的更新 endpoint 在 CNB）。
+#
+# 发版流程：
+#   node scripts/sync-version.mjs 0.2.0
+#   git commit -am "release 0.2.0" && git tag v0.2.0
+#   git push origin main --tags          # 推 CNB（主）
+#   git push github v0.2.0               # 推 GitHub 触发本 workflow
+#
+# 需要的 GitHub Secrets：
+#   TAURI_SIGNING_PRIVATE_KEY            ~/.tauri/keyan-calculator.key 全文
+#   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  生成时未设密码，留空
+#   CNB_TOKEN                            CNB 访问令牌（需 repo-code:rw，用于推 latest.json）
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-14        # Apple Silicon (aarch64)
+            target: aarch64-apple-darwin
+          - platform: windows-latest  # x86_64
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install frontend deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Build, sign & publish to GitHub Release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: '算码工具 ${{ github.ref_name }}'
+          releaseBody: '本次更新内容见提交记录。'
+          releaseDraft: false
+          prerelease: false
+          includeUpdaterJson: true
+          args: --target ${{ matrix.target }}
+
+  # 把 latest.json 推回 CNB —— app 的更新 endpoint 读取 CNB main 上的该文件。
+  # 二进制仍托管在 GitHub Release（有稳定公开直链；CNB 附件无稳定直链）。
+  sync-manifest-to-cnb:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download latest.json from GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release download "${{ github.ref_name }}" -R "${{ github.repository }}" -p latest.json
+
+      - name: Commit & push manifest to CNB
+        env:
+          CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
+        run: |
+          set -e
+          git clone "https://cnb:${CNB_TOKEN}@cnb.cool/dachengzhihui/keyan-calculator.git" cnb
+          mkdir -p cnb/.updater
+          cp latest.json cnb/.updater/latest.json
+          cd cnb
+          git config user.name "release-bot"
+          git config user.email "release-bot@users.noreply.cnb.cool"
+          git add .updater/latest.json
+          if git diff --cached --quiet; then
+            echo "manifest 无变化，跳过"
+            exit 0
+          fi
+          git commit -m "chore(updater): 更新 ${{ github.ref_name }} 清单"
+          git push origin HEAD:main
