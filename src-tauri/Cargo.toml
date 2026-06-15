@@ -1,6 +1,6 @@
 [package]
 name = "calculator"
-version = "0.1.0"
+version = "0.2.0"
 description = "算码工具 - SM3 算码与时间存证"
 authors = ["yuzi"]
 edition = "2021"
