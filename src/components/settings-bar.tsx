@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Settings, UploadCloud, Loader2, Sun, Moon, Fingerprint } from 'lucide-react';
+import { Settings, UploadCloud, Loader2, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -57,9 +57,7 @@ export function SettingsBar({
     <header className="flex h-14 items-center gap-3 border-b bg-background px-4">
       {/* 品牌 */}
       <div className="flex items-center gap-2.5">
-        <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <Fingerprint className="size-4" />
-        </div>
+        <img src="/app-icon.svg" alt="算码工具" className="size-7" draggable={false} />
         <div className="leading-tight">
           <div className="text-sm font-semibold">算码工具</div>
           <div className="text-[11px] text-muted-foreground">SM3 · 时间存证</div>
