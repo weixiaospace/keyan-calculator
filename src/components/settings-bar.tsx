@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { Settings, UploadCloud, Loader2, Sun, Moon, RefreshCw } from 'lucide-react';
-import { runUpdateCheck } from '@/lib/updater';
+import { Settings, UploadCloud, Loader2, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,16 +42,6 @@ export function SettingsBar({
 
   const [endpointOpen, setEndpointOpen] = useState(false);
   const [endpointDraft, setEndpointDraft] = useState('');
-  const [checkingUpdate, setCheckingUpdate] = useState(false);
-
-  const checkUpdate = async () => {
-    setCheckingUpdate(true);
-    try {
-      await runUpdateCheck(false);
-    } finally {
-      setCheckingUpdate(false);
-    }
-  };
 
   useEffect(() => {
     setEndpointDraft(config?.upload_endpoint ?? '');
@@ -101,21 +90,6 @@ export function SettingsBar({
           </Button>
         </TooltipTrigger>
         <TooltipContent>{isDark ? '切换到亮色' : '切换到暗色'}</TooltipContent>
-      </Tooltip>
-
-      {/* 检查更新 */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={checkUpdate}
-            disabled={checkingUpdate}
-          >
-            <RefreshCw className={`size-4 ${checkingUpdate ? 'animate-spin' : ''}`} />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>检查更新</TooltipContent>
       </Tooltip>
 
       {/* 上传地址设置 */}

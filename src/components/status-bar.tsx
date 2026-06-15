@@ -1,5 +1,10 @@
+import { useEffect, useState } from 'react';
+import { getVersion } from '@tauri-apps/api/app';
+import { RefreshCw } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { runUpdateCheck } from '@/lib/updater';
 import { cn } from '@/lib/utils';
 
 export interface GlobalTask {
@@ -30,6 +35,22 @@ export function StatusBar({
   task,
 }: StatusBarProps) {
   const pct = task && task.total > 0 ? Math.round((task.done / task.total) * 100) : 0;
+
+  const [version, setVersion] = useState('');
+  const [checking, setChecking] = useState(false);
+
+  useEffect(() => {
+    getVersion().then(setVersion).catch(() => setVersion(''));
+  }, []);
+
+  const checkUpdate = async () => {
+    setChecking(true);
+    try {
+      await runUpdateCheck(false);
+    } finally {
+      setChecking(false);
+    }
+  };
 
   return (
     <footer className="flex h-8 shrink-0 items-center gap-3 border-t bg-background px-3 text-xs text-muted-foreground">
@@ -67,6 +88,23 @@ export function StatusBar({
           {endpointConfigured ? '已配置上传地址 · 就绪' : '未配置上传地址'}
         </span>
       )}
+
+      <span className="text-border">·</span>
+      {/* 版本号 + 检查更新（点击检查） */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={checkUpdate}
+            disabled={checking}
+            className="flex items-center gap-1 rounded px-1.5 py-0.5 tabular-nums transition-colors hover:bg-accent hover:text-foreground disabled:opacity-60"
+          >
+            v{version || '…'}
+            <RefreshCw className={cn('size-3', checking && 'animate-spin')} />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>检查更新</TooltipContent>
+      </Tooltip>
     </footer>
   );
 }
