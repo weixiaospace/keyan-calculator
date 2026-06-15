@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "算码工具",
+  "productName": "keyan-calculator",
   "version": "0.2.0",
   "identifier": "cn.com.dachengzhihui.calculator",
   "build": {

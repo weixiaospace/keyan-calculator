@@ -29,11 +29,11 @@ BUNDLE="src-tauri/target/release/bundle"
 case "$OSTYPE" in
   darwin*)
     PLATFORM="darwin-aarch64"
-    ARTIFACT="$BUNDLE/macos/算码工具.app.tar.gz"
+    ARTIFACT="$BUNDLE/macos/keyan-calculator.app.tar.gz"
     ;;
   msys* | cygwin* | win32)
     PLATFORM="windows-x86_64"
-    ARTIFACT="$BUNDLE/nsis/算码工具_${VERSION}_x64-setup.exe"
+    ARTIFACT="$BUNDLE/nsis/keyan-calculator_${VERSION}_x64-setup.exe"
     ;;
   *) echo "不支持的平台：$OSTYPE" >&2; exit 3 ;;
 esac
