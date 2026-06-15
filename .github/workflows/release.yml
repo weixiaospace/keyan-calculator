@@ -68,54 +68,27 @@ jobs:
           releaseBody: '本次更新内容见提交记录。'
           releaseDraft: false
           prerelease: false
-          includeUpdaterJson: false
+          includeUpdaterJson: true
           args: ${{ matrix.args }}
 
-  # 把 latest.json 推回 CNB —— app 的更新 endpoint 读取 CNB main 上的该文件。
-  # 二进制仍托管在 GitHub Release（有稳定公开直链；CNB 附件无稳定直链）。
-  sync-manifest-to-cnb:
+  # 把二进制发布到 CNB Release（国内公开直链）+ 生成指向 CNB 的 latest.json 推回 CNB main。
+  # 检查更新与下载均走 CNB；GitHub 仅作构建农场与中转。
+  publish-to-cnb:
     needs: build
     runs-on: ubuntu-latest
-    env:
-      REPO: ${{ github.repository }}
-      TAG: ${{ github.ref_name }}
     steps:
-      - name: Generate latest.json from release assets
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts from GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
-          VERSION="${TAG#v}"
-          BASE="https://github.com/$REPO/releases/download/$TAG"
-          mac_targz=$(gh release view "$TAG" -R "$REPO" --json assets -q '.assets[].name | select(endswith(".app.tar.gz"))')
-          win_exe=$(gh release view "$TAG" -R "$REPO" --json assets -q '.assets[].name | select(endswith("-setup.exe"))')
-          gh release download "$TAG" -R "$REPO" -p "*.sig" -D sigs --clobber
-          jq -n \
-            --arg version "$VERSION" \
-            --arg notes "算码工具 $TAG" \
-            --arg pub "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            --arg msig "$(cat "sigs/$mac_targz.sig")" --arg murl "$BASE/$mac_targz" \
-            --arg wsig "$(cat "sigs/$win_exe.sig")" --arg wurl "$BASE/$win_exe" \
-            '{version:$version, notes:$notes, pub_date:$pub, platforms:{
-               "darwin-aarch64":{signature:$msig,url:$murl},
-               "windows-x86_64":{signature:$wsig,url:$wurl}}}' > latest.json
-          cat latest.json
+          mkdir -p dist
+          gh release download "${{ github.ref_name }}" -R "${{ github.repository }}" -D dist \
+            -p "*.app.tar.gz" -p "*.app.tar.gz.sig" -p "*-setup.exe" -p "*-setup.exe.sig"
+          ls -la dist
 
-      - name: Commit & push manifest to CNB
+      - name: Publish to CNB Release + manifest
         env:
           CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
-        run: |
-          set -e
-          git clone "https://cnb:${CNB_TOKEN}@cnb.cool/dachengzhihui/keyan-calculator.git" cnb
-          mkdir -p cnb/.updater
-          cp latest.json cnb/.updater/latest.json
-          cd cnb
-          git config user.name "release-bot"
-          git config user.email "release-bot@users.noreply.cnb.cool"
-          git add .updater/latest.json
-          if git diff --cached --quiet; then
-            echo "manifest 无变化，跳过"
-            exit 0
-          fi
-          git commit -m "chore(updater): 更新 $TAG 清单"
-          git push origin HEAD:main
+        run: bash scripts/publish-cnb.sh "${{ github.ref_name }}" dist
