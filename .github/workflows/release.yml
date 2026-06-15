@@ -68,7 +68,7 @@ jobs:
           releaseBody: '本次更新内容见提交记录。'
           releaseDraft: false
           prerelease: false
-          includeUpdaterJson: true
+          includeUpdaterJson: false
           args: ${{ matrix.args }}
 
   # 把 latest.json 推回 CNB —— app 的更新 endpoint 读取 CNB main 上的该文件。
@@ -76,11 +76,30 @@ jobs:
   sync-manifest-to-cnb:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
     steps:
-      - name: Download latest.json from GitHub Release
+      - name: Generate latest.json from release assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release download "${{ github.ref_name }}" -R "${{ github.repository }}" -p latest.json
+        run: |
+          set -e
+          VERSION="${TAG#v}"
+          BASE="https://github.com/$REPO/releases/download/$TAG"
+          mac_targz=$(gh release view "$TAG" -R "$REPO" --json assets -q '.assets[].name | select(endswith(".app.tar.gz"))')
+          win_exe=$(gh release view "$TAG" -R "$REPO" --json assets -q '.assets[].name | select(endswith("-setup.exe"))')
+          gh release download "$TAG" -R "$REPO" -p "*.sig" -D sigs --clobber
+          jq -n \
+            --arg version "$VERSION" \
+            --arg notes "算码工具 $TAG" \
+            --arg pub "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg msig "$(cat "sigs/$mac_targz.sig")" --arg murl "$BASE/$mac_targz" \
+            --arg wsig "$(cat "sigs/$win_exe.sig")" --arg wurl "$BASE/$win_exe" \
+            '{version:$version, notes:$notes, pub_date:$pub, platforms:{
+               "darwin-aarch64":{signature:$msig,url:$murl},
+               "windows-x86_64":{signature:$wsig,url:$wurl}}}' > latest.json
+          cat latest.json
 
       - name: Commit & push manifest to CNB
         env:
@@ -98,5 +117,5 @@ jobs:
             echo "manifest 无变化，跳过"
             exit 0
           fi
-          git commit -m "chore(updater): 更新 ${{ github.ref_name }} 清单"
+          git commit -m "chore(updater): 更新 $TAG 清单"
           git push origin HEAD:main

@@ -1,15 +1,15 @@
 {
-  "version": "0.1.0",
-  "notes": "算码工具",
-  "pub_date": "2026-06-15T00:00:00Z",
+  "version": "0.2.0",
+  "notes": "算码工具 v0.2.0",
+  "pub_date": "2026-06-15T15:31:32.232Z",
   "platforms": {
     "darwin-aarch64": {
-      "signature": "",
-      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ1lLcVNhNWcvY1o1dWpXOXJLekYreTZLWXpGMWxSRFVCaXNZMUFwdDVEWnlyc0tWa0lGOFhyQy9kRVZRS0QyVzRna0grU280azRCSDZIRjhPY3I5N1FVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTM3MTA5CWZpbGU6566X56CB5bel5YW3LmFwcC50YXIuZ3oKanB3TUFHdENBbjc4V0o0K201MklsTnhhTEtQSTZYN0xqdWQ5c09DZUgwNUVYakhZSVgyaGpPNE84R2JBNmtjeis1bGJjK2hiYk5GWUgrUm1nYVQ2QXc9PQo=",
+      "url": "https://github.com/weixiaospace/keyan-calculator/releases/download/v0.2.0/_aarch64.app.tar.gz"
     },
     "windows-x86_64": {
-      "signature": "",
-      "url": "https://cnb.cool/dachengzhihui/keyan-calculator/-/releases"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRNXlGY1ZkSEZMZ2RBMkMvcHBGcTJIZHZZWkdxNlk5VG40dk1zWG8rZFlVcmVnMlR6Z3NlMVNBNVdreW9QZW5mWlZsNS95NVgzUVY1Z1hHUGgzcUJ6NTgwby95QjZPVHc4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgxNTM3MzQzCWZpbGU6566X56CB5bel5YW3XzAuMi4wX3g2NC1zZXR1cC5leGUKZDY0MnIvTU9rQ25oczQwbmdFV1BBc005K0g2Ni9Mb0IyakpLQ2RvWkJ2L2JmSXpXVjg5THBvMlpUT0xVUHpsR0d0Q0w0TXFWdjRvQ1gzd3VGOUdRQkE9PQo=",
+      "url": "https://github.com/weixiaospace/keyan-calculator/releases/download/v0.2.0/_0.2.0_x64-setup.exe"
     }
   }
 }
