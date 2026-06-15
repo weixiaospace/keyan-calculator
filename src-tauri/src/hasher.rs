@@ -12,7 +12,7 @@ use std::path::Path;
 pub fn sm3_bytes(data: &[u8]) -> String {
     let mut hasher = Sm3::new();
     hasher.update(data);
-    format!("{:x}", hasher.finalize())
+    hex::encode(hasher.finalize())
 }
 
 /// 流式计算文件内容的 SM3（每次读 1MB，内存恒定）
@@ -27,7 +27,7 @@ pub fn sm3_file_streaming(path: &Path) -> std::io::Result<String> {
         }
         hasher.update(&buf[..n]);
     }
-    Ok(format!("{:x}", hasher.finalize()))
+    Ok(hex::encode(hasher.finalize()))
 }
 
 /// 时间存证派生码 = SM3( "{sm3}|{created}|{modified}|{calc_ts}" )
