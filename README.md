@@ -57,4 +57,16 @@ keyan-calculator/
 cd src-tauri && cargo test --lib    # 后端单元测试（SM3 向量、派生码、存证逻辑）
 ```
 
+## 发布与自动更新
+
+GitHub Actions 出 mac/win 签名包 → 发布到 CNB Release → 更新检查与下载全程走 CNB。发版：
+
+```bash
+node scripts/sync-version.mjs 0.3.0
+git commit -am "release 0.3.0" && git tag v0.3.0
+git push origin main && git push github v0.3.0
+```
+
+完整架构、原理、踩坑与维护红线见 [docs/auto-update.md](docs/auto-update.md)。
+
 bundle identifier：`cn.com.dachengzhihui.calculator`
